@@ -8,6 +8,8 @@ include ("headfile.html");
 echo "<h4>".$pagename."</h4>";
 //create a $SQL variable and populate it with a SQL statement that retrieves product details
 $SQL="select prodId, prodName, prodPicNameSmall, prodDescripShort, prodPrice from Product";
+echo "<p>".$arrayp['prodDescripShort'];
+echo "<p>&pound".$arrayp['prodPrice'];
 //run SQL query for connected DB or exit and display error message
 $exeSQL=mysqli_query($conn, $SQL) or die (mysqli_error($conn));
 echo "<table style='border: 0px'>";

@@ -30,7 +30,7 @@ if (isset($_POST['h_prodid'])) {
 //else
 //Display "Current basket unchanged " message
 else {
-    echo "<p>Basket unchanged";
+    // echo "<p>Basket unchanged";
 }
 
 // Initialize total to zero
@@ -79,12 +79,11 @@ echo "<td colspan=3>TOTAL</td>";
 echo "<td>&pound" . number_format($total, 2) . "</td>";
 echo "</tr>";
 echo "</table>";
-// } else {
-//     // Display empty basket message
-//     echo "<p>Your basket is empty</p>";
-// }
 
 echo "<br><p><a href='clearbasket.php'>CLEAR BASKET</a></p>";
+
+echo "<br><p>New homteq customers: <a href='signup.php'>Sign up</a></p>";
+echo "<p>Returning homteq customers: <a href='login.php'>Login</a></p>";
 
 include("footfile.html");
 echo "</body>";

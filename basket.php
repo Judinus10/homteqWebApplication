@@ -38,7 +38,7 @@ $total = 0; //Create a variable $total and initialize it to zero
 //Create HTML table with header to display the content of the basket: prod name, price, selected quantity and subtotal
 echo "<p><table id='baskettable'>";
 echo "<tr>";
-echo "<th>Product Name</th><th>Price</th><th>Quantity</th><th>Subtotal</th>";
+echo "<th>Product Name</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th>Remove Product</th>";
 echo "</tr>";
 //if the session array $_SESSION['basket'] is set
 if (isset($_SESSION['basket'])) {
@@ -64,6 +64,12 @@ if (isset($_SESSION['basket'])) {
         //calculate subtotal, store it in a local variable $subtotal and display it
         $subtotal = $arrayp['prodPrice'] * $value;
         echo "<td>&pound" . number_format($subtotal, 2) . "</td>";
+        echo "<form action=basket.php method=post>";
+        echo "<td>";
+        echo "<input type=submit value='Remove' id='submitbtn'>";
+        echo "</td>";
+        echo "<input type='hidden' name='remove_prodid' value='" . $arrayp['prodId'] . "'>";
+        echo "</form>";
         echo "</tr>";
         //increase total by adding the subtotal to the current total
         $total = $total + $subtotal;
@@ -75,7 +81,7 @@ else {
 }
 // Display total
 echo "<tr>";
-echo "<td colspan=3>TOTAL</td>";
+echo "<td colspan=4>TOTAL</td>";
 echo "<td>&pound" . number_format($total, 2) . "</td>";
 echo "</tr>";
 echo "</table>";

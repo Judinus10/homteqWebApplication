@@ -1,22 +1,14 @@
 <?php
 session_start();
-include("db.php");
-
+include ("db.php"); //include db.php file to connect to DB
+$pagename="clear smart basket"; //create and populate variable called $pagename
+echo "<link rel=stylesheet type=text/css href=mystylesheet.css>";
+echo "<title>".$pagename."</title>";
+echo "<body>";
+include ("headfile.html");
+echo "<h4>".$pagename."</h4>";
 unset($_SESSION['basket']);
+echo "<P>Your basket has been cleared!";
+include ("footfile.html");
+echo "</body>";
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clear Smart Basket</title>
-    <link rel="stylesheet" type="text/css" href="mystylesheet.css">
-</head>
-<body>
-    <?php include("headfile.html"); ?>
-    <h4>Clear Smart Basket</h4>
-    <p>Your basket has been cleared</p>
-    <?php include("footfile.html"); ?>
-</body>
-</html>

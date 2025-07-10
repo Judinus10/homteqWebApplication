@@ -1,26 +1,56 @@
-<?php 
-$pagename="template";      
-//Create and populate a variable called $pagename 
-echo "<link rel=stylesheet type=text/css href=mystylesheet.css>";  
-echo "<title>".$pagename."</title>";   
-echo "<body>"; 
-include ("headfile.html");     
-echo "<h4>".$pagename."</h4>";    
-//Call in stylesheet 
-//display name of the page as window title 
-//include header layout file  
-//display name of the page on the web page 
-//display random text 
-echo "<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-labore et dolore magna aliqua. Non consectetur a erat nam at lectus urna. Cras pulvinar mattis nunc sed 
-blandit libero volutpat sed cras. Nunc aliquet bibendum enim facilisis gravida neque convallis a cras. 
-Nunc consequat interdum varius sit. Nam aliquam sem et tortor consequat. Magna sit amet purus gravida. Non 
-sodales neque sodales ut etiam sit. Tortor consequat id porta nibh venenatis. Ornare arcu odio ut sem 
-nulla pharetra diam. Tincidunt ornare massa eget egestas purus. Pulvinar mattis nunc sed blandit libero 
-volutpat sed. Nulla malesuada pellentesque elit eget. Varius quam quisque id diam vel quam elementum 
-pulvinar. Aliquet eget sit amet tellus cras adipiscing enim eu turpis. Vestibulum lectus mauris ultrices 
-eros in. Faucibus in ornare quam viverra. Hac habitasse platea dictumst vestibulum rhoncus. Parturient 
-montes nascetur ridiculus mus. Dui accumsan sit amet nulla facilisi morbi tempus iaculis urna."; 
-include("footfile.html");     
-echo "</body>"; 
-?> 
+<?php
+session_start(); // Start the session
+
+include("db.php");
+
+$pagename = "Smart Basket";
+echo "<link rel=stylesheet type=text/css href=mystylesheet.css>";
+echo "<title>".$pagename."</title>";
+echo "<body>";
+include("headfile.html");
+echo "<h4>".$pagename."</h4>";
+
+// Initialize total to zero
+$total = 0;
+
+// Check if the session array $_SESSION['basket'] is set
+if(isset($_SESSION['basket'])) {
+    // Create a HTML table with a header to display the content of the shopping basket
+    echo "<table border='1'>";
+    echo "<tr><th>Product Name</th><th>Price</th><th>Quantity</th><th>Subtotal</th></tr>";
+
+    // Loop through the basket session array using a foreach loop
+    foreach($_SESSION['basket'] as $index => $value) {
+        // SQL query to retrieve details of selected product
+        $SQL = "SELECT * FROM Product WHERE prodId=$index";
+        // Execute query
+        $exeSQL = mysqli_query($conn, $SQL) or die(mysqli_error($conn));
+        // Fetch product details
+        $arrayp = mysqli_fetch_array($exeSQL);
+
+        // Display product details in table rows
+        echo "<tr>";
+        echo "<td>".$arrayp['prodName']."</td>"; // Product name
+        echo "<td>".$arrayp['prodPrice']."</td>"; // Product price
+        echo "<td>".$value."</td>"; // Quantity
+        // Calculate subtotal
+        $subtotal = $arrayp['prodPrice'] * $value;
+        echo "<td>".$subtotal."</td>"; // Subtotal
+        echo "</tr>";
+
+        // Update total
+        $total += $subtotal;
+    }
+
+    // Display total
+    echo "<tr><td colspan='3'>Total</td><td>".$total."</td></tr>";
+
+    echo "</table>";
+} else {
+    // Display empty basket message
+    echo "<p>Your basket is empty</p>";
+}
+
+include("footfile.html");
+echo "</body>";
+?>

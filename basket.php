@@ -84,6 +84,8 @@ echo "</table>";
 //     echo "<p>Your basket is empty</p>";
 // }
 
+echo "<br><p><a href='clearbasket.php'>CLEAR BASKET</a></p>";
+
 include("footfile.html");
 echo "</body>";
 ?>

@@ -30,7 +30,7 @@ if ($arrayp = mysqli_fetch_array($exeSQL)) {
     echo "<tr>";
     echo "<td style='border: 0px'>";
     // Display the large image
-    echo "<img src=images/".$arrayp['prodPicNameLarge']." height=300 width=300>";
+    echo "<img src=assets/images/".$arrayp['prodPicNameLarge']." height=300 width=300>";
     echo "</td>";
     echo "<td style='border: 0px'>";
     echo "<p><h2>".$arrayp['prodName']."</h2><br> ";// Display product name

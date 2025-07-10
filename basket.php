@@ -18,9 +18,9 @@ if (isset($_POST['h_prodid'])) {
 //and store it in a new local variable called $reququantity
     $reququantity = $_POST['p_quantity'];
     //Display id of selected product
-    echo "<p>Id of selected product: " . $newprodid;
+    // echo "<p>Id of selected product: " . $newprodid;
     //Display quantity of selected product
-    echo "<br>Quantity of selected product: " . $reququantity;
+    // echo "<br>Quantity of selected product: " . $reququantity;
     //create a new cell in the basket session array. Index this cell with the new product id.
 //Inside the cell store the required product quantity
     $_SESSION['basket'][$newprodid] = $reququantity;
@@ -32,49 +32,57 @@ if (isset($_POST['h_prodid'])) {
 else {
     echo "<p>Basket unchanged";
 }
+
 // Initialize total to zero
-$total = 0;
-
-// Check if the session array $_SESSION['basket'] is set and not empty
-if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
-    echo "<table border='1'>";
-    echo "<tr><th>Product Name</th><th>Price</th><th>Quantity</th><th>Subtotal</th></tr>";
-
-    // Loop through each item in the basket
+$total = 0; //Create a variable $total and initialize it to zero
+//Create HTML table with header to display the content of the basket: prod name, price, selected quantity and subtotal
+echo "<p><table id='baskettable'>";
+echo "<tr>";
+echo "<th>Product Name</th><th>Price</th><th>Quantity</th><th>Subtotal</th>";
+echo "</tr>";
+//if the session array $_SESSION['basket'] is set
+if (isset($_SESSION['basket'])) {
+    //loop through the basket session array for each data item inside the session using a foreach loop
+//to split the session array between the index and the content of the cell
+//for each iteration of the loop
+//store the id in a local variable $index & store the required quantity into a local variable $value
     foreach ($_SESSION['basket'] as $index => $value) {
-        // Validate the product ID
+        //SQL query to retrieve from Product table details of selected product for which id matches $index
+//execute query and create array of records $arrayp
         if (!is_numeric($index)) {
             continue; // Skip if index is not a number
         }
-
-        $prodId = intval($index); // Sanitize the product ID
-        $SQL = "SELECT * FROM Product WHERE prodId=$prodId";
+        $SQL = "select prodId, prodName, prodPrice from Product where prodId=" . $index;
         $exeSQL = mysqli_query($conn, $SQL) or die(mysqli_error($conn));
-
-        // Check if the product exists
-        if (mysqli_num_rows($exeSQL) > 0) {
-            $arrayp = mysqli_fetch_array($exeSQL);
-
-            echo "<tr>";
-            echo "<td>" . $arrayp['prodName'] . "</td>";
-            echo "<td>" . $arrayp['prodPrice'] . "</td>";
-            echo "<td>" . $value . "</td>";
-
-            $subtotal = $arrayp['prodPrice'] * $value;
-            echo "<td>" . $subtotal . "</td>";
-            echo "</tr>";
-
-            $total += $subtotal;
-        }
+        $arrayp = mysqli_fetch_array($exeSQL);
+        echo "<tr>";
+        //display product name & product price using array of records $arrayp
+        echo "<td>" . $arrayp['prodName'] . "</td>";
+        echo "<td>&pound" . number_format($arrayp['prodPrice'], 2) . "</td>";
+        // display selected quantity of product retrieved from the cell of session array and now in $value
+        echo "<td style='text-align:center;'>" . $value . "</td>";
+        //calculate subtotal, store it in a local variable $subtotal and display it
+        $subtotal = $arrayp['prodPrice'] * $value;
+        echo "<td>&pound" . number_format($subtotal, 2) . "</td>";
+        echo "</tr>";
+        //increase total by adding the subtotal to the current total
+        $total = $total + $subtotal;
     }
-
-    // Display total
-    echo "<tr><td colspan='3'><b>Total</b></td><td><b>" . $total . "</b></td></tr>";
-    echo "</table>";
-} else {
-    // Display empty basket message
-    echo "<p>Your basket is empty</p>";
 }
+//else display empty basket message
+else {
+    echo "<p>Empty basket";
+}
+// Display total
+echo "<tr>";
+echo "<td colspan=3>TOTAL</td>";
+echo "<td>&pound" . number_format($total, 2) . "</td>";
+echo "</tr>";
+echo "</table>";
+// } else {
+//     // Display empty basket message
+//     echo "<p>Your basket is empty</p>";
+// }
 
 include("footfile.html");
 echo "</body>";

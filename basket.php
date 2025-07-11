@@ -7,7 +7,7 @@ echo "<link rel='stylesheet' type='text/css' href='mystylesheet.css'>";
 echo "<title>" . $pagename . "</title>";
 echo "<body>";
 include("headfile.html");
-include ("detectlogin.php");
+include("detectlogin.php");
 echo "<h4>" . $pagename . "</h4>";
 
 /* ✅ REMOVE ITEM CODE (as per your pseudocode) */
@@ -68,8 +68,13 @@ if (isset($_SESSION['basket']) && !empty($_SESSION['basket'])) {
 echo "</table>";
 
 echo "<br><p><a href='clearbasket.php'>CLEAR BASKET</a></p>";
-echo "<br><p>New homteq customers: <a href='signup.php'>Sign up</a></p>";
-echo "<br><p>Returning homteq customers: <a href='login.php'>Login</a></p>";
+
+if (isset($_SESSION['userid'])) {
+    echo "<br><p><a href=checkout.php>CHECKOUT</a></p>";
+} else {
+    echo "<br><p>New homteq customers: <a href='signup.php'>Sign up</a></p>";
+    echo "<p>Returning homteq customers: <a href='login.php'>Login</a></p>";
+}
 
 include("footfile.html");
 echo "</body>";
